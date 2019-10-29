@@ -25,13 +25,13 @@ def create_connection(db_file):
         print(e)
     return conn
 
-def create_transaction(conn, transaction):
+def create_transaction(conn, transaction, transactionstr):
     #sql = "insert into {} ({},{},{}) values ({},{},{})"
     print("get cursor")
     cur = conn.cursor()
     print("printing transaction")
     print(transaction)
-    print(cur.execute(insertString, transaction))
+    print(cur.execute(transactionstr))
     print("transaction executed")
 
 #TRANACTION_ID INTEGER, TRANSACTION_TYPE TEXT, TRANSACTION_INFO TEXT, TRANSACTION_DATE TEXT
@@ -57,15 +57,15 @@ def insert_to_table(payloadString):
 
     #print("transactionType: %s transactionInfo: %s transcationDate: %s" % (transactionType, info, datetime.datetime.now()))
     datetimestr=datetime.datetime.now()
-    print(insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetime.datetime.now()))
-
+    print(insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr))
+    transactionstr = insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr)
     conn=create_connection(database)
     print("connection created")
     with conn:
         print("creating transaction table")
         transaction = (tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr)
         print("creating transaction")
-        create_transaction(conn, transaction)
+        create_transaction(conn, transaction, transactionstr)
         print("transaction created")
 
     
