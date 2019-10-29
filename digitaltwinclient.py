@@ -15,7 +15,7 @@ typeLabel = "TRANSACTION_TYPE"
 infoLabel = "TRANSACTION_INFO"
 dateLabel = "TRANSACTION_DATE"
 
-insertString = "insert into digitaltwin_db.{} ({},{},{}) values ({},{},{})"
+insertString = "insert into {} ({},{},{}) values ({},{},{})"
 
 def create_connection(db_file):
     conn=None
@@ -29,7 +29,8 @@ def create_transaction(conn, transaction):
     #sql = "insert into {} ({},{},{}) values ({},{},{})"
     print("get cursor")
     cur = conn.cursor()
-    print("execute transaction")
+    print("printing transaction")
+    print(transaction)
     print(cur.execute(insertString, transaction))
     print("transaction executed")
 
