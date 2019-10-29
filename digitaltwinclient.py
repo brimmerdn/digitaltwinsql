@@ -26,11 +26,12 @@ def create_connection(db_file):
     return conn
 
 def create_transaction(conn, transaction):
-    sql = "insert into {} ({},{},{}) values ({},{},{})"
+    #sql = "insert into {} ({},{},{}) values ({},{},{})"
     print("get cursor")
     cur = conn.cursor()
     print("execute transaction")
-    cur.execute(sql, transaction)
+    cur.execute(insertString, transaction)
+    print("transaction executed")
 
 #TRANACTION_ID INTEGER, TRANSACTION_TYPE TEXT, TRANSACTION_INFO TEXT, TRANSACTION_DATE TEXT
 #INSERTS TRANSACTION INTO DIGITAL_TWIN_DB.DIGITAL_TWIN_LOG TABLE
