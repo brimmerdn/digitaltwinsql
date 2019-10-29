@@ -1,4 +1,5 @@
 import sqlite3
+from sqlite3 import Error
 import paho.mqtt.client as mqtt
 import datetime
 
