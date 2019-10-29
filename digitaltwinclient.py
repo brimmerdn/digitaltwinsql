@@ -15,7 +15,7 @@ typeLabel = "TRANSACTION_TYPE"
 infoLabel = "TRANSACTION_INFO"
 dateLabel = "TRANSACTION_DATE"
 
-insertString = "insert into {} ({},{},{}) values ({},{},{})"
+insertString = "insert into digitaltwin_db.{} ({},{},{}) values ({},{},{})"
 
 def create_connection(db_file):
     conn=None
