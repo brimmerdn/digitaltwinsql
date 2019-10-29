@@ -14,7 +14,7 @@ typeLabel = "TRANSACTION_TYPE"
 infoLabel = "TRANSACTION_INFO"
 dateLabel = "TRANSACTION_DATE"
 
-insertString = "insert into {} ({},{},{}) values ({},{},{})"
+#insertString = "insert into {} ({},{},{}) values ({},{},{})"
 
 def create_connection(db_file):
     conn=None
@@ -26,13 +26,14 @@ def create_connection(db_file):
 
 def create_transaction(conn, transaction):
     sql = "insert into {} ({},{},{}) values ({},{},{})"
+    print("get cursor")
     cur = conn.cursor()
+    print("execute transaction")
     cur.execute(sql, transaction)
 
 #TRANACTION_ID INTEGER, TRANSACTION_TYPE TEXT, TRANSACTION_INFO TEXT, TRANSACTION_DATE TEXT
 #INSERTS TRANSACTION INTO DIGITAL_TWIN_DB.DIGITAL_TWIN_LOG TABLE
 def insert_to_table(payloadString):
-    print(payloadString)
     info = ""
     transactionType=""
     if "Temperature" in payloadString:
@@ -53,12 +54,16 @@ def insert_to_table(payloadString):
 
     #print("transactionType: %s transactionInfo: %s transcationDate: %s" % (transactionType, info, datetime.datetime.now()))
     datetimestr=datetime.datetime.now()
-    #print(insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetime.datetime.now()))
+    print(insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetime.datetime.now()))
 
     conn=create_connection(database)
+    print("connection created")
     with conn:
+        print("creating transaction table")
         transaction = (tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr)
+        print("creating transaction")
         create_transaction(conn, transaction)
+        print("transaction created")
 
     
 # The callback for when the client receives a CONNACK response from the server.
