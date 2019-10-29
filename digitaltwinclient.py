@@ -30,7 +30,7 @@ def create_transaction(conn, transaction):
     print("get cursor")
     cur = conn.cursor()
     print("execute transaction")
-    cur.execute(insertString, transaction)
+    print(cur.execute(insertString, transaction))
     print("transaction executed")
 
 #TRANACTION_ID INTEGER, TRANSACTION_TYPE TEXT, TRANSACTION_INFO TEXT, TRANSACTION_DATE TEXT
