@@ -30,7 +30,7 @@ def create_connection(db_file):
     return conn
 
 def create_transaction(conn, transaction):
-    sql = "insert into "+tableName+"("+typeLabel+","+infoLabel+","+dateLabel+") values ({},{},{})"
+    sql = "insert into "+tableName+"("+typeLabel+","+infoLabel+","+dateLabel+") values (?,?,?)"
     cur = conn.cursor()
     cur.execute(sql, transaction)
 
