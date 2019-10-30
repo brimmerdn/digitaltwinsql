@@ -10,12 +10,16 @@ topic = "outTopic"
 database = "/home/pi/digitaltwin_db"
 tableName = "DIGITAL_TWIN_EVENTS"
 
-transactionID ="TRANACTION_ID"
 typeLabel = "TRANSACTION_TYPE"
 infoLabel = "TRANSACTION_INFO"
 dateLabel = "TRANSACTION_DATE"
 
-insertString = "insert into {} ({},{},{}) values ({},{},{})"
+doorEventLabel = "Door Event"
+lightEventLabel = "Light Event"
+temperatureEventLabel = "Temperature Event"
+connectionEventLabel = "Connection Event"
+messageEventLabel = "Message Event"
+
 
 def create_connection(db_file):
     conn=None
@@ -25,14 +29,10 @@ def create_connection(db_file):
         print(e)
     return conn
 
-def create_transaction(conn, transaction, transactionstr):
-    #sql = "insert into {} ({},{},{}) values ({},{},{})"
-    print("get cursor")
+def create_transaction(conn, transaction):
+    sql = "insert into "+tableName+"("+typeLabel+","+infoLabel+","+dateLabel+") values ({},{},{})"
     cur = conn.cursor()
-    print("printing transaction")
-    print(transaction)
-    print(cur.execute(transactionstr))
-    print("transaction executed")
+    cur.execute(sql, transaction)
 
 #TRANACTION_ID INTEGER, TRANSACTION_TYPE TEXT, TRANSACTION_INFO TEXT, TRANSACTION_DATE TEXT
 #INSERTS TRANSACTION INTO DIGITAL_TWIN_DB.DIGITAL_TWIN_LOG TABLE
@@ -40,33 +40,26 @@ def insert_to_table(payloadString):
     info = ""
     transactionType=""
     if "Temperature" in payloadString:
-        transactionType = "Temperature Event"
+        transactionType = temperatureEventLabel
         info = payloadString.replace("Temperature","")
     elif "DoorClosed" in payloadString or "DoorOpen" in payloadString:
-        transactionType = "Door Event"
+        transactionType = doorEventLabel
         info = payloadString
     elif "lightOn" in payloadString or "lightOff" in payloadString:
-        transactionType = "Light Event"
+        transactionType = lightEventLabel
         info = payloadString
     elif "Connected" in payloadString:
-        transactionType = "Connection Event"
+        transactionType = connectionEventLabel
         info = payloadString
     else:
-        transactionType = "Message Event"
+        transactionType = messageEventLabel
         info = payloadString
 
-    #print("transactionType: %s transactionInfo: %s transcationDate: %s" % (transactionType, info, datetime.datetime.now()))
     datetimestr=datetime.datetime.now()
-    print(insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr))
-    transactionstr = insertString.format(tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr)
     conn=create_connection(database)
-    print("connection created")
     with conn:
-        print("creating transaction table")
-        transaction = (tableName, typeLabel, infoLabel, dateLabel, transactionType, info, datetimestr)
-        print("creating transaction")
-        create_transaction(conn, transaction, transactionstr)
-        print("transaction created")
+        transaction = (transactionType, info, datetimestr)
+        create_transaction(conn, transaction)
 
     
 # The callback for when the client receives a CONNACK response from the server.
