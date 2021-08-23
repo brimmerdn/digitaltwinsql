@@ -3,12 +3,12 @@ from sqlite3 import Error
 import paho.mqtt.client as mqtt
 import datetime
 
-broker = "192.168.1.163"
-port = 1883
-topic = "outTopic"
+broker = BROKER_IP
+port = PORT_NUMBER
+topic = TOPIC_NAME
 
-database = "/home/pi/digitaltwin_db"
-tableName = "DIGITAL_TWIN_EVENTS"
+database = DATABASE_LOCATION
+tableName = TABLE_NAME
 
 typeLabel = "TRANSACTION_TYPE"
 infoLabel = "TRANSACTION_INFO"
